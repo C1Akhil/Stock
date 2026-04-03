@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: nifty50-analyser
+    env: java
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/nifty50-analyser-1.0.0.jar
+    plan: free
