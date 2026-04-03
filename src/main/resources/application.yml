@@ -1,0 +1,100 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: nifty50-analyser
+
+  datasource:
+    url: jdbc:h2:mem:marketdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=300s
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+# Market Data Provider Configuration
+# Supports: ALPHA_VANTAGE | TWELVE_DATA | YAHOO_FINANCE | UPSTOX | ZERODHA | MOCK
+market:
+  provider: YAHOO_FINANCE        # Change to your preferred provider
+  refresh-interval-seconds: 300  # Auto-refresh every 5 minutes
+  indicators:
+    rsi-period: 14
+    macd-fast: 12
+    macd-slow: 26
+    macd-signal: 9
+    ma-short: 20
+    ma-long: 50
+
+  # Alpha Vantage (free tier: 25 calls/day)
+  alpha-vantage:
+    api-key: YOUR_ALPHA_VANTAGE_KEY
+    base-url: https://www.alphavantage.co/query
+
+  # Twelve Data (free tier: 800 calls/day)
+  twelve-data:
+    api-key: YOUR_TWELVE_DATA_KEY
+    base-url: https://api.twelvedata.com
+
+  # Yahoo Finance (unofficial, no key needed)
+  yahoo-finance:
+    base-url: https://query1.finance.yahoo.com/v8/finance/chart
+
+  # Upstox (requires OAuth token)
+  upstox:
+    api-key: YOUR_UPSTOX_API_KEY
+    access-token: YOUR_UPSTOX_ACCESS_TOKEN
+    base-url: https://api.upstox.com/v2
+
+  # Zerodha Kite (requires session token)
+  zerodha:
+    api-key: YOUR_ZERODHA_API_KEY
+    access-token: YOUR_ZERODHA_ACCESS_TOKEN
+    base-url: https://api.kite.trade
+
+# Springdoc / Swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,caches
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.market.analyser: DEBUG
+    org.springframework.web: INFO
