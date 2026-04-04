@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v1/analysis")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @Tag(name = "Nifty50 Analysis", description = "Live market analysis with MACD, RSI and MA indicators")
 public class AnalysisController {
 
