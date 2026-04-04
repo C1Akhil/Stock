@@ -19,7 +19,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleWebClientError(WebClientResponseException ex) {
         log.error("Market data provider error: {} {}", ex.getStatusCode(), ex.getMessage());
         return error(HttpStatus.BAD_GATEWAY,
-                "Market data provider returned an error: " + ex.getStatusCode());
+                "Market data provider error: " + ex.getStatusCode() +
+                ". The app will use simulated data instead.");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -30,7 +31,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
         log.error("Unhandled exception: {}", ex.getMessage(), ex);
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        return error(HttpStatus.INTERNAL_SERVER_ERROR,
+                "An unexpected error occurred: " + ex.getMessage());
     }
 
     private ResponseEntity<Map<String, Object>> error(HttpStatus status, String message) {

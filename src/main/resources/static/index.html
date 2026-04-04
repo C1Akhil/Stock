@@ -468,7 +468,7 @@
     document.getElementById('refreshBtn').disabled=true;
 
     try{
-      const res = await fetch('/api/v1/analysis/all');
+      const res = await fetch('/v1/analysis/all');
       if(!res.ok) throw new Error(`Server returned ${res.status}: ${res.statusText}`);
       rawData = await res.json();
 
@@ -492,7 +492,7 @@
       box.innerHTML=`<div class="err-box">
         <h3>Failed to load market data</h3>
         <p style="margin:6px 0;font-size:12px;">Error: ${e.message}</p>
-        <p style="margin-top:10px;font-size:12px;">Make sure the Spring Boot backend is running and the API endpoint <code>/api/v1/analysis/all</code> is accessible.</p>
+        <p style="margin-top:10px;font-size:12px;">Make sure the Spring Boot backend is running and the API endpoint <code>/v1/analysis/all</code> is accessible.</p>
       </div>`;
     } finally {
       document.getElementById('refreshBtn').disabled=false;
